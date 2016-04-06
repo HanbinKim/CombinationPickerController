@@ -14,17 +14,27 @@
                 <rect key="frame" x="0.0" y="0.0" width="104" height="104"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="camera-icon" translatesAutoresizingMaskIntoConstraints="NO" id="5ps-oK-RLx">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="camera-icon" translatesAutoresizingMaskIntoConstraints="NO" id="5ps-oK-RLx">
                         <rect key="frame" x="0.0" y="0.0" width="104" height="104"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     </imageView>
-                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ql1-aV-54w">
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ql1-aV-54w">
                         <rect key="frame" x="0.0" y="0.0" width="104" height="104"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </view>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
+            <constraints>
+                <constraint firstItem="Ql1-aV-54w" firstAttribute="top" secondItem="BXQ-z5-INC" secondAttribute="top" id="548-yj-S9E"/>
+                <constraint firstItem="5ps-oK-RLx" firstAttribute="top" secondItem="BXQ-z5-INC" secondAttribute="top" id="IDM-ad-rbP"/>
+                <constraint firstItem="Ql1-aV-54w" firstAttribute="leading" secondItem="BXQ-z5-INC" secondAttribute="leading" id="Is5-Wu-hwQ"/>
+                <constraint firstAttribute="trailing" secondItem="5ps-oK-RLx" secondAttribute="trailing" id="ZHb-XZ-VsX"/>
+                <constraint firstAttribute="bottom" secondItem="Ql1-aV-54w" secondAttribute="bottom" id="ckU-ip-H2X"/>
+                <constraint firstAttribute="bottom" secondItem="5ps-oK-RLx" secondAttribute="bottom" id="d9d-6J-5J5"/>
+                <constraint firstItem="5ps-oK-RLx" firstAttribute="leading" secondItem="BXQ-z5-INC" secondAttribute="leading" id="jTD-zB-qwq"/>
+                <constraint firstAttribute="trailing" secondItem="Ql1-aV-54w" secondAttribute="trailing" id="sx8-rX-vRx"/>
+            </constraints>
             <connections>
                 <outlet property="bgView" destination="Ql1-aV-54w" id="ojV-v6-8HI"/>
                 <outlet property="imageView" destination="5ps-oK-RLx" id="fdj-fn-LrS"/>
