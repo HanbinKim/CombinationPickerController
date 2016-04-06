@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ODMCombinationPickerViewController">
@@ -22,11 +23,9 @@
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pgt-ON-nkr">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NXc-j5-7LX">
                             <rect key="frame" x="70" y="25" width="180" height="34"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <state key="normal" title="Camera Roll ▾">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -35,13 +34,12 @@
                                 <action selector="showMenu:" destination="-1" eventType="touchUpInside" id="eyc-if-b8W"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WcQ-fW-JHS">
-                            <rect key="frame" x="20" y="27" width="48" height="30"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WcQ-fW-JHS">
+                            <rect key="frame" x="12" y="33" width="17" height="17"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="48" id="X5q-OH-3FP"/>
+                                <constraint firstAttribute="width" constant="17" id="X5q-OH-3FP"/>
                             </constraints>
-                            <state key="normal" title="Cancel">
+                            <state key="normal" image="btn_back">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
@@ -49,12 +47,13 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bkN-s0-JSJ">
-                            <rect key="frame" x="263" y="27" width="37" height="30"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <rect key="frame" x="264" y="27" width="45" height="30"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="37" id="n9M-f7-1iE"/>
+                                <constraint firstAttribute="width" constant="45" id="n9M-f7-1iE"/>
+                                <constraint firstAttribute="height" constant="30" id="xvP-d0-njF"/>
                             </constraints>
-                            <state key="normal" title="Done">
+                            <state key="normal" title="NEXT">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
@@ -62,22 +61,21 @@
                             </connections>
                         </button>
                     </subviews>
-                    <color key="backgroundColor" red="0.13725490200000001" green="0.13725490200000001" blue="0.13725490200000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.44705882349999998" green="0.29411764709999999" blue="0.67843137249999996" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="centerX" secondItem="NXc-j5-7LX" secondAttribute="centerX" id="5qD-Il-Q9n"/>
                         <constraint firstItem="NXc-j5-7LX" firstAttribute="centerY" secondItem="WcQ-fW-JHS" secondAttribute="centerY" id="CRU-Dw-SEC"/>
                         <constraint firstItem="bkN-s0-JSJ" firstAttribute="top" secondItem="pgt-ON-nkr" secondAttribute="top" constant="27" id="H5S-ui-qET"/>
-                        <constraint firstAttribute="bottom" secondItem="WcQ-fW-JHS" secondAttribute="bottom" constant="7" id="HsA-er-Fd4"/>
-                        <constraint firstItem="NXc-j5-7LX" firstAttribute="leading" secondItem="WcQ-fW-JHS" secondAttribute="trailing" constant="2" id="JUO-9n-deU"/>
-                        <constraint firstItem="WcQ-fW-JHS" firstAttribute="top" secondItem="pgt-ON-nkr" secondAttribute="top" constant="27" id="NlY-FK-Rbm"/>
+                        <constraint firstAttribute="bottom" secondItem="WcQ-fW-JHS" secondAttribute="bottom" constant="14" id="HsA-er-Fd4"/>
+                        <constraint firstItem="NXc-j5-7LX" firstAttribute="leading" secondItem="WcQ-fW-JHS" secondAttribute="trailing" constant="41" id="JUO-9n-deU"/>
+                        <constraint firstItem="WcQ-fW-JHS" firstAttribute="top" secondItem="pgt-ON-nkr" secondAttribute="top" constant="33" id="NlY-FK-Rbm"/>
                         <constraint firstAttribute="bottom" secondItem="bkN-s0-JSJ" secondAttribute="bottom" constant="7" id="Uew-67-8CJ"/>
-                        <constraint firstAttribute="trailing" secondItem="bkN-s0-JSJ" secondAttribute="trailing" constant="20" id="k9G-Pp-j5U"/>
-                        <constraint firstItem="WcQ-fW-JHS" firstAttribute="leading" secondItem="pgt-ON-nkr" secondAttribute="leading" constant="20" id="rFy-qi-BFH"/>
+                        <constraint firstAttribute="trailing" secondItem="bkN-s0-JSJ" secondAttribute="trailing" constant="11" id="k9G-Pp-j5U"/>
+                        <constraint firstItem="WcQ-fW-JHS" firstAttribute="leading" secondItem="pgt-ON-nkr" secondAttribute="leading" constant="12" id="rFy-qi-BFH"/>
                     </constraints>
                 </view>
                 <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Eth-sw-4ZK">
                     <rect key="frame" x="0.0" y="64" width="320" height="504"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="4" minimumInteritemSpacing="4" id="KBR-sc-2wc">
                         <size key="itemSize" width="104" height="104"/>
                         <size key="headerReferenceSize" width="0.0" height="4"/>
@@ -106,25 +104,21 @@
                 </collectionView>
                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aIM-kt-Ilv" userLabel="View - permisstion">
                     <rect key="frame" x="0.0" y="64" width="320" height="504"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Please Allow Photo Access" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1t5-vh-gFg">
                             <rect key="frame" x="28" y="59" width="264" height="27"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="22"/>
                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="To allow photo save photo" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xpa-MW-P0m">
                             <rect key="frame" x="59" y="118" width="202" height="21"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Please go to iOS [Setting] => [Privacy] => [Photo] set app to ON" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="279" translatesAutoresizingMaskIntoConstraints="NO" id="XWk-7A-dzF">
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Please go to iOS [Setting] =&gt; [Privacy] =&gt; [Photo] set app to ON" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="279" translatesAutoresizingMaskIntoConstraints="NO" id="XWk-7A-dzF">
                             <rect key="frame" x="21" y="155" width="279" height="117"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
@@ -148,7 +142,10 @@
                 <constraint firstItem="aIM-kt-Ilv" firstAttribute="leading" secondItem="zjg-3h-buS" secondAttribute="leading" id="rqn-sh-dCV"/>
                 <constraint firstAttribute="trailing" secondItem="pgt-ON-nkr" secondAttribute="trailing" id="sbb-WK-o5d"/>
             </constraints>
-            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+            <nil key="simulatedStatusBarMetrics"/>
         </view>
     </objects>
+    <resources>
+        <image name="btn_back" width="17" height="17"/>
+    </resources>
 </document>

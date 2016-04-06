@@ -68,7 +68,8 @@
 		84AED3B6198F81A500486ACB /* ODMCombinationPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ODMCombinationPickerViewController.h; path = Classes/ODMCombinationPickerViewController.h; sourceTree = "<group>"; };
 		84AED3B7198F81A500486ACB /* ODMCombinationPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ODMCombinationPickerViewController.m; path = Classes/ODMCombinationPickerViewController.m; sourceTree = "<group>"; };
 		84FE55971988D93E0034D932 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		CC6A12A5F72C4FAE86216A54 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		8C572EC99B75394EA43B181C /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		A97081AE11D4372BCA96E6BE /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		EA1E185420894B76B6F4E232 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -98,6 +99,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2304897143FABD3AFCB0E533 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				A97081AE11D4372BCA96E6BE /* Pods.debug.xcconfig */,
+				8C572EC99B75394EA43B181C /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		8480B58C19889B900074F0A1 = {
 			isa = PBXGroup;
 			children = (
@@ -106,7 +116,7 @@
 				8480B5BD19889B900074F0A1 /* CombinationPickerContollerTests */,
 				8480B59719889B900074F0A1 /* Frameworks */,
 				8480B59619889B900074F0A1 /* Products */,
-				CC6A12A5F72C4FAE86216A54 /* Pods.xcconfig */,
+				2304897143FABD3AFCB0E533 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -225,6 +235,7 @@
 				8480B59219889B900074F0A1 /* Frameworks */,
 				8480B59319889B900074F0A1 /* Resources */,
 				2013B0A23E6B4C919C987236 /* Copy Pods Resources */,
+				EB7D1C421C0E17B3EE0AFF48 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -324,7 +335,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		41EAD3642E1A49F1A92C702C /* Check Pods Manifest.lock */ = {
@@ -340,6 +351,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		EB7D1C421C0E17B3EE0AFF48 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -475,7 +501,7 @@
 		};
 		8480B5C819889B900074F0A1 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CC6A12A5F72C4FAE86216A54 /* Pods.xcconfig */;
+			baseConfigurationReference = A97081AE11D4372BCA96E6BE /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -489,7 +515,7 @@
 		};
 		8480B5C919889B900074F0A1 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CC6A12A5F72C4FAE86216A54 /* Pods.xcconfig */;
+			baseConfigurationReference = 8C572EC99B75394EA43B181C /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
