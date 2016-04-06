@@ -167,7 +167,7 @@
 #pragma mark - UICollectionViewDelegate
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    float width = (CGRectGetWidth([[UIScreen mainScreen] bounds]) - 8)/3;
+    float width = (CGRectGetWidth([[UIScreen mainScreen] bounds]) - 10)/3;
     CGSize cellSize = CGSizeMake(width, width);
     return cellSize;
 }
