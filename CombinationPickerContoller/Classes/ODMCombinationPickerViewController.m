@@ -65,7 +65,10 @@
     ALAssetsGroupEnumerationResultsBlock assetsEnumerationBlock = ^(ALAsset *result, NSUInteger index, BOOL *stop) {
         
         if (result) {
-            [self.assets insertObject:result atIndex:0];
+            if([result valueForProperty:ALAssetTypePhoto] && [result valueForProperty:ALAssetPropertyLocation] != nil) {
+                [self.assets insertObject:result atIndex:0];
+            }
+            
         }
         
         if ([self.assetsGroup numberOfAssets] - 1 == index) {
@@ -273,8 +276,9 @@
             ALAssetsGroupEnumerationResultsBlock assetsEnumerationBlock = ^(ALAsset *result, NSUInteger index, BOOL *stop) {
                 
                 if (result) {
-                    
-                    [self.assets insertObject:result atIndex:0];
+                    if([result valueForProperty:ALAssetTypePhoto] && [result valueForProperty:ALAssetPropertyLocation] != nil) {
+                        [self.assets insertObject:result atIndex:0];
+                    }
                     
                 }
             };
