@@ -37,6 +37,8 @@ static NSString *CellIdentifier = @"photoCell";
 @property (nonatomic, strong) UIColor *selectionHighlightColor;
 @property (nonatomic, assign) CGFloat selectionBorderWidth;
 
+@property (nonatomic, assign) BOOL havePlaceData;
+
 @property (nonatomic, copy) void (^didFinishPickingAsset)(ODMCombinationPickerViewController *,ALAsset *);
 @property (nonatomic, copy) void (^didCancel)(ODMCombinationPickerViewController *);
 

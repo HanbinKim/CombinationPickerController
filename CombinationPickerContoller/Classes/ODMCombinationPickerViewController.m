@@ -65,10 +65,16 @@
     ALAssetsGroupEnumerationResultsBlock assetsEnumerationBlock = ^(ALAsset *result, NSUInteger index, BOOL *stop) {
         
         if (result) {
-            if([result valueForProperty:ALAssetTypePhoto] && [result valueForProperty:ALAssetPropertyLocation] != nil) {
-                [self.assets insertObject:result atIndex:0];
+            if(_havePlaceData) {
+                if([result valueForProperty:ALAssetTypePhoto] && [result valueForProperty:ALAssetPropertyLocation] != nil) {
+                    [self.assets insertObject:result atIndex:0];
+                }
             }
-            
+            else {
+                if([result valueForProperty:ALAssetTypePhoto]) {
+                    [self.assets insertObject:result atIndex:0];
+                }
+            }
         }
         
         if ([self.assetsGroup numberOfAssets] - 1 == index) {
@@ -276,10 +282,16 @@
             ALAssetsGroupEnumerationResultsBlock assetsEnumerationBlock = ^(ALAsset *result, NSUInteger index, BOOL *stop) {
                 
                 if (result) {
-                    if([result valueForProperty:ALAssetTypePhoto] && [result valueForProperty:ALAssetPropertyLocation] != nil) {
-                        [self.assets insertObject:result atIndex:0];
+                    if(_havePlaceData) {
+                        if([result valueForProperty:ALAssetTypePhoto] && [result valueForProperty:ALAssetPropertyLocation] != nil) {
+                            [self.assets insertObject:result atIndex:0];
+                        }
                     }
-                    
+                    else {
+                        if([result valueForProperty:ALAssetTypePhoto]) {
+                            [self.assets insertObject:result atIndex:0];
+                        }
+                    }
                 }
             };
             
