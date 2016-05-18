@@ -282,17 +282,22 @@
             ALAssetsGroupEnumerationResultsBlock assetsEnumerationBlock = ^(ALAsset *result, NSUInteger index, BOOL *stop) {
                 
                 if (result) {
-                    if(_havePlaceData) {
+                    if(_nextDate != nil) {
                         if([result valueForProperty:ALAssetTypePhoto] && [result valueForProperty:ALAssetPropertyLocation] != nil) {
-                            [self.assets insertObject:result atIndex:0];
-                        }
-                    }
-                    else if(_nextDate != nil) {
-                        if([result valueForProperty:ALAssetTypePhoto] && [result valueForProperty:ALAssetPropertyLocation] != nil) {
+                            NSDateFormatter *dateFormatter = [NSDateFormatter new];
+                            [dateFormatter setDateFormat:@"yyyyMMdd"];
                             NSDate *compareDate = [result valueForProperty:ALAssetPropertyDate];
-                            if([compareDate compare:_nextDate] == NSOrderedAscending) {
+                            
+                            
+                            if([[dateFormatter stringFromDate:_nextDate] integerValue] < [[dateFormatter
+                                stringFromDate:compareDate] integerValue]) {
                                 [self.assets insertObject:result atIndex:0];
                             }
+                        }
+                    }
+                    else if(_havePlaceData) {
+                        if([result valueForProperty:ALAssetTypePhoto] && [result valueForProperty:ALAssetPropertyLocation] != nil) {
+                            [self.assets insertObject:result atIndex:0];
                         }
                     }
                     else {
