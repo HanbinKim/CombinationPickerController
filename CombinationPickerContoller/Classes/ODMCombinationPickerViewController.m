@@ -287,6 +287,14 @@
                             [self.assets insertObject:result atIndex:0];
                         }
                     }
+                    else if(_nextDate != nil) {
+                        if([result valueForProperty:ALAssetTypePhoto] && [result valueForProperty:ALAssetPropertyLocation] != nil) {
+                            NSDate *compareDate = [result valueForProperty:ALAssetPropertyDate];
+                            if([compareDate compare:_nextDate] == NSOrderedAscending) {
+                                [self.assets insertObject:result atIndex:0];
+                            }
+                        }
+                    }
                     else {
                         if([result valueForProperty:ALAssetTypePhoto]) {
                             [self.assets insertObject:result atIndex:0];
