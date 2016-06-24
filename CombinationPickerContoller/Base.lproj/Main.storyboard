@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Qhg-ya-3Wi">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Qhg-ya-3Wi">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -82,57 +82,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9nl-Nh-BaL">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fJB-3u-3vk">
-                                        <rect key="frame" x="70" y="25" width="180" height="34"/>
-                                        <state key="normal" title="Camera Roll ▾">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="showMenu:" destination="3K5-oC-IRc" eventType="touchUpInside" id="TnD-Cs-pdL"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c3C-nP-FJA">
-                                        <rect key="frame" x="20" y="27" width="48" height="30"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="48" id="oID-eb-Ofl"/>
-                                        </constraints>
-                                        <state key="normal" title="Cancel">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="cancel:" destination="3K5-oC-IRc" eventType="touchUpInside" id="bZA-ZG-ipU"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ur9-ev-SbQ">
-                                        <rect key="frame" x="263" y="27" width="37" height="30"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="37" id="GEv-4A-ehb"/>
-                                        </constraints>
-                                        <state key="normal" title="Done">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="done:" destination="3K5-oC-IRc" eventType="touchUpInside" id="4yd-pp-QB0"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                                <color key="backgroundColor" red="0.13725490196078433" green="0.13725490196078433" blue="0.13725490196078433" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstItem="fJB-3u-3vk" firstAttribute="leading" secondItem="c3C-nP-FJA" secondAttribute="trailing" constant="2" id="15l-Xq-4s2"/>
-                                    <constraint firstAttribute="trailing" secondItem="ur9-ev-SbQ" secondAttribute="trailing" constant="20" id="8da-dk-haA"/>
-                                    <constraint firstAttribute="bottom" secondItem="ur9-ev-SbQ" secondAttribute="bottom" constant="7" id="Lza-I6-fV6"/>
-                                    <constraint firstAttribute="centerX" secondItem="fJB-3u-3vk" secondAttribute="centerX" id="NCe-NW-CHY"/>
-                                    <constraint firstItem="c3C-nP-FJA" firstAttribute="top" secondItem="9nl-Nh-BaL" secondAttribute="top" constant="27" id="NzT-Yd-M2e"/>
-                                    <constraint firstItem="c3C-nP-FJA" firstAttribute="leading" secondItem="9nl-Nh-BaL" secondAttribute="leading" constant="20" id="Qsa-MX-qup"/>
-                                    <constraint firstItem="ur9-ev-SbQ" firstAttribute="top" secondItem="9nl-Nh-BaL" secondAttribute="top" constant="27" id="VUg-EP-Red"/>
-                                    <constraint firstItem="fJB-3u-3vk" firstAttribute="centerY" secondItem="c3C-nP-FJA" secondAttribute="centerY" id="WLn-ia-QB8"/>
-                                    <constraint firstAttribute="bottom" secondItem="c3C-nP-FJA" secondAttribute="bottom" constant="7" id="j1P-nb-kde"/>
-                                </constraints>
-                            </view>
                             <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Yxg-8G-KXf">
                                 <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="4" minimumInteritemSpacing="4" id="apf-tE-y3W">
@@ -161,6 +110,57 @@
                                     <outlet property="delegate" destination="3K5-oC-IRc" id="hPT-jF-agb"/>
                                 </connections>
                             </collectionView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9nl-Nh-BaL">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c3C-nP-FJA">
+                                        <rect key="frame" x="20" y="27" width="48" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="48" id="oID-eb-Ofl"/>
+                                        </constraints>
+                                        <state key="normal" title="Cancel">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="cancel:" destination="3K5-oC-IRc" eventType="touchUpInside" id="bZA-ZG-ipU"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ur9-ev-SbQ">
+                                        <rect key="frame" x="263" y="27" width="37" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="37" id="GEv-4A-ehb"/>
+                                        </constraints>
+                                        <state key="normal" title="Done">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="done:" destination="3K5-oC-IRc" eventType="touchUpInside" id="4yd-pp-QB0"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fJB-3u-3vk">
+                                        <rect key="frame" x="70" y="25" width="180" height="34"/>
+                                        <state key="normal" title="Camera Roll ▾">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="showMenu:" destination="3K5-oC-IRc" eventType="touchUpInside" id="TnD-Cs-pdL"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" red="0.13725490196078433" green="0.13725490196078433" blue="0.13725490196078433" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstItem="fJB-3u-3vk" firstAttribute="leading" secondItem="c3C-nP-FJA" secondAttribute="trailing" constant="2" id="15l-Xq-4s2"/>
+                                    <constraint firstAttribute="trailing" secondItem="ur9-ev-SbQ" secondAttribute="trailing" constant="20" id="8da-dk-haA"/>
+                                    <constraint firstAttribute="bottom" secondItem="ur9-ev-SbQ" secondAttribute="bottom" constant="7" id="Lza-I6-fV6"/>
+                                    <constraint firstAttribute="centerX" secondItem="fJB-3u-3vk" secondAttribute="centerX" id="NCe-NW-CHY"/>
+                                    <constraint firstItem="c3C-nP-FJA" firstAttribute="top" secondItem="9nl-Nh-BaL" secondAttribute="top" constant="27" id="NzT-Yd-M2e"/>
+                                    <constraint firstItem="c3C-nP-FJA" firstAttribute="leading" secondItem="9nl-Nh-BaL" secondAttribute="leading" constant="20" id="Qsa-MX-qup"/>
+                                    <constraint firstItem="ur9-ev-SbQ" firstAttribute="top" secondItem="9nl-Nh-BaL" secondAttribute="top" constant="27" id="VUg-EP-Red"/>
+                                    <constraint firstItem="fJB-3u-3vk" firstAttribute="centerY" secondItem="c3C-nP-FJA" secondAttribute="centerY" id="WLn-ia-QB8"/>
+                                    <constraint firstAttribute="bottom" secondItem="c3C-nP-FJA" secondAttribute="bottom" constant="7" id="j1P-nb-kde"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>

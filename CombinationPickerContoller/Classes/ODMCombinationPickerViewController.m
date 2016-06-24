@@ -9,8 +9,13 @@
 #import "ODMCombinationPickerViewController.h"
 #import "ODMCollectionViewCell.h"
 #import "KxMenu.h"
+#import "ODMGroupViewController.h"
+#import "GroupModel.h"
 
-@interface ODMCombinationPickerViewController ()
+@interface ODMCombinationPickerViewController ()<ODMGroupViewControllerDelegate>
+
+@property (nonatomic, strong) ODMGroupViewController *groupViewController;
+@property (nonatomic) BOOL showOrHide; //show :1 hide : 0
 
 @end
 
@@ -286,60 +291,115 @@
     [self checkDoneButton];
 }
 
-- (void)changeGroup:(KxMenuItem *)menu
-{
-    for (ALAssetsGroup *group in self.groups) {
-        if ([[group valueForProperty:ALAssetsGroupPropertyName] isEqualToString:[menu title]]) {
-            self.assetsGroup = group;
-            
-            ALAssetsGroupEnumerationResultsBlock assetsEnumerationBlock = ^(ALAsset *result, NSUInteger index, BOOL *stop) {
-                
-                if (result) {
-                    if(_nextDate != nil) {
-                        if([result valueForProperty:ALAssetTypePhoto] && [result valueForProperty:ALAssetPropertyLocation] != nil) {
-                            NSDateFormatter *dateFormatter = [NSDateFormatter new];
-                            [dateFormatter setDateFormat:@"yyyyMMdd"];
-                            NSDate *compareDate = [result valueForProperty:ALAssetPropertyDate];
-                            
-                            
-                            if([[dateFormatter stringFromDate:_nextDate] integerValue] < [[dateFormatter
-                                stringFromDate:compareDate] integerValue]) {
+- (void)changeGroup:(id)sender {
+    GroupModel *modle = (GroupModel *)sender;
+        for (ALAssetsGroup *group in self.groups) {
+            if ([[group valueForProperty:ALAssetsGroupPropertyName] isEqualToString:[modle title]]) {
+                self.assetsGroup = group;
+    
+                ALAssetsGroupEnumerationResultsBlock assetsEnumerationBlock = ^(ALAsset *result, NSUInteger index, BOOL *stop) {
+    
+                    if (result) {
+                        if(_nextDate != nil) {
+                            if([result valueForProperty:ALAssetTypePhoto] && [result valueForProperty:ALAssetPropertyLocation] != nil) {
+                                NSDateFormatter *dateFormatter = [NSDateFormatter new];
+                                [dateFormatter setDateFormat:@"yyyyMMdd"];
+                                NSDate *compareDate = [result valueForProperty:ALAssetPropertyDate];
+    
+    
+                                if([[dateFormatter stringFromDate:_nextDate] integerValue] < [[dateFormatter
+                                    stringFromDate:compareDate] integerValue]) {
+                                    [self.assets insertObject:result atIndex:0];
+                                }
+                            }
+                        }
+                        else if(_havePlaceData) {
+                            if([result valueForProperty:ALAssetTypePhoto] && [result valueForProperty:ALAssetPropertyLocation] != nil) {
+                                [self.assets insertObject:result atIndex:0];
+                            }
+                        }
+                        else {
+                            if([result valueForProperty:ALAssetTypePhoto]) {
                                 [self.assets insertObject:result atIndex:0];
                             }
                         }
                     }
-                    else if(_havePlaceData) {
-                        if([result valueForProperty:ALAssetTypePhoto] && [result valueForProperty:ALAssetPropertyLocation] != nil) {
-                            [self.assets insertObject:result atIndex:0];
-                        }
-                    }
-                    else {
-                        if([result valueForProperty:ALAssetTypePhoto]) {
-                            [self.assets insertObject:result atIndex:0];
-                        }
-                    }
-                }
-            };
-            
-            if (!self.assets) {
-                _assets = [[NSMutableArray alloc] init];
-            } else {
-                [self.assets removeAllObjects];
-            }
-            
-            [self.assetsGroup enumerateAssetsUsingBlock:assetsEnumerationBlock];
-            
-            [self addImageFirstRow];
-            
-            [self.collectionView reloadData];
-            
-            [self setNavigationTitle:[menu title]];
-        }
-    }
+                };
     
-    currentSelectedIndex = nil;
+                if (!self.assets) {
+                    _assets = [[NSMutableArray alloc] init];
+                } else {
+                    [self.assets removeAllObjects];
+                }
+    
+                [self.assetsGroup enumerateAssetsUsingBlock:assetsEnumerationBlock];
+    
+                [self addImageFirstRow];
+    
+                [self.collectionView reloadData];
+                
+                [self setNavigationTitle:[modle title]];
+            }
+        }
+        
+        currentSelectedIndex = nil;
+    [self showGroupView];
 }
 
+//- (void)changeGroup:(KxMenuItem *)menu
+//{
+//    for (ALAssetsGroup *group in self.groups) {
+//        if ([[group valueForProperty:ALAssetsGroupPropertyName] isEqualToString:[menu title]]) {
+//            self.assetsGroup = group;
+//            
+//            ALAssetsGroupEnumerationResultsBlock assetsEnumerationBlock = ^(ALAsset *result, NSUInteger index, BOOL *stop) {
+//                
+//                if (result) {
+//                    if(_nextDate != nil) {
+//                        if([result valueForProperty:ALAssetTypePhoto] && [result valueForProperty:ALAssetPropertyLocation] != nil) {
+//                            NSDateFormatter *dateFormatter = [NSDateFormatter new];
+//                            [dateFormatter setDateFormat:@"yyyyMMdd"];
+//                            NSDate *compareDate = [result valueForProperty:ALAssetPropertyDate];
+//                            
+//                            
+//                            if([[dateFormatter stringFromDate:_nextDate] integerValue] < [[dateFormatter
+//                                stringFromDate:compareDate] integerValue]) {
+//                                [self.assets insertObject:result atIndex:0];
+//                            }
+//                        }
+//                    }
+//                    else if(_havePlaceData) {
+//                        if([result valueForProperty:ALAssetTypePhoto] && [result valueForProperty:ALAssetPropertyLocation] != nil) {
+//                            [self.assets insertObject:result atIndex:0];
+//                        }
+//                    }
+//                    else {
+//                        if([result valueForProperty:ALAssetTypePhoto]) {
+//                            [self.assets insertObject:result atIndex:0];
+//                        }
+//                    }
+//                }
+//            };
+//            
+//            if (!self.assets) {
+//                _assets = [[NSMutableArray alloc] init];
+//            } else {
+//                [self.assets removeAllObjects];
+//            }
+//            
+//            [self.assetsGroup enumerateAssetsUsingBlock:assetsEnumerationBlock];
+//            
+//            [self addImageFirstRow];
+//            
+//            [self.collectionView reloadData];
+//            
+//            [self setNavigationTitle:[menu title]];
+//        }
+//    }
+//    
+//    currentSelectedIndex = nil;
+//}
+//
 
 - (void)addImageFirstRow
 {
@@ -375,19 +435,66 @@
 {
     NSMutableArray *menuItems = [[NSMutableArray alloc] init];
     
+    if(!self.groupViewController) {
+        self.groupViewController = [[ODMGroupViewController alloc] init];
+        self.groupViewController.delegate = self;
+        [self.view addSubview:self.groupViewController.view];
+        [self.view bringSubviewToFront:self.navigationView];
+    }
+    [self showGroupView];
+    
+
+    __block ALAsset *asset;
     for (ALAssetsGroup *group in self.groups) {
         
-        [menuItems addObject:[KxMenuItem menuItem:[group valueForProperty:ALAssetsGroupPropertyName]
-                                            image:nil
-                                           target:self
-                                           action:@selector(changeGroup:)]];
+//        [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
+////            if(!asset) {
+//                asset = result;
+////            }
+//            if(index == 1) {
+//                *stop = YES;
+//            }
+//            UIImage *image = [UIImage imageWithCGImage:[asset aspectRatioThumbnail]];
+//            NSLog(@"%@ggggg@",image);
+//
+//        }];
+        NSLog(@"%@",[UIImage imageWithCGImage:[group posterImage]]);
+        GroupModel *model = [[GroupModel alloc] initForTitle:[group valueForProperty:ALAssetsGroupPropertyName] firstAlasset:[UIImage imageWithCGImage:[group posterImage]] photoCount:group.numberOfAssets];
+        [menuItems addObject:model];
     }
+    //
+    //        [menuItems addObject:[KxMenuItem menuItem:[group valueForProperty:ALAssetsGroupPropertyName]
+    //                                            image:nil
+    //                                           target:self
+    //                                           action:@selector(changeGroup:)]];
     
-    if (menuItems.count) {
-        [KxMenu showMenuInView:self.view
-                      fromRect:sender.frame
-                     menuItems:menuItems];
+    self.groupViewController.groups = menuItems;
+    [self.groupViewController.tableView reloadData];
+    
+//
+//    if (menuItems.count) {
+//        [KxMenu showMenuInView:self.view
+//                      fromRect:sender.frame
+//                     menuItems:menuItems];
+//    }
+}
+
+- (void)showGroupView {
+    
+    if(_showOrHide) {
+        self.groupViewController.view.frame = [self view:self.groupViewController.view setYPostion:64];
+        [UIView animateWithDuration:0.5 animations:^{
+            self.groupViewController.view.frame = [self view:self.groupViewController.view setYPostion:-660];
+        }];
     }
+    else {
+        self.groupViewController.view.frame = [self view:self.groupViewController.view setYPostion:-660];
+        [UIView animateWithDuration:0.5 animations:^{
+            self.groupViewController.view.frame = [self view:self.groupViewController.view setYPostion:64];
+        }];
+        
+    }
+    _showOrHide = !_showOrHide;
 }
 
 
@@ -474,5 +581,15 @@
 {
     [self.navigationController setNavigationBarHidden:isHideNavigationbar animated:NO];
 }
+
+#pragma mark - Fuction
+
+- (CGRect)view:(UIView *)view setYPostion :(CGFloat)postion {
+    CGRect frame = view.frame;
+    frame.origin.y = postion;
+    
+    return frame;
+}
+
 
 @end

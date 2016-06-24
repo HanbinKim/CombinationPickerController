@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		26F9FAB01D1BF1CD00BBD9A5 /* ODMTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 26F9FAAE1D1BF1CD00BBD9A5 /* ODMTableViewCell.m */; };
+		26F9FAB11D1BF1CD00BBD9A5 /* ODMTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 26F9FAAF1D1BF1CD00BBD9A5 /* ODMTableViewCell.xib */; };
+		26F9FAB51D1CDA5600BBD9A5 /* ODMGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26F9FAB31D1CDA5600BBD9A5 /* ODMGroupViewController.m */; };
+		26F9FAB61D1CDA5600BBD9A5 /* ODMGroupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 26F9FAB41D1CDA5600BBD9A5 /* ODMGroupViewController.xib */; };
+		26F9FABC1D1D09A400BBD9A5 /* GroupModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 26F9FABB1D1D09A400BBD9A5 /* GroupModel.m */; };
 		50FBC6C8F58A43428C8C5764 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EA1E185420894B76B6F4E232 /* libPods.a */; };
 		8480B59919889B900074F0A1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8480B59819889B900074F0A1 /* Foundation.framework */; };
 		8480B59D19889B900074F0A1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8480B59C19889B900074F0A1 /* UIKit.framework */; };
@@ -41,6 +46,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		26F9FAAD1D1BF1CD00BBD9A5 /* ODMTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ODMTableViewCell.h; sourceTree = "<group>"; };
+		26F9FAAE1D1BF1CD00BBD9A5 /* ODMTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODMTableViewCell.m; sourceTree = "<group>"; };
+		26F9FAAF1D1BF1CD00BBD9A5 /* ODMTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ODMTableViewCell.xib; sourceTree = "<group>"; };
+		26F9FAB21D1CDA5600BBD9A5 /* ODMGroupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ODMGroupViewController.h; sourceTree = "<group>"; };
+		26F9FAB31D1CDA5600BBD9A5 /* ODMGroupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODMGroupViewController.m; sourceTree = "<group>"; };
+		26F9FAB41D1CDA5600BBD9A5 /* ODMGroupViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ODMGroupViewController.xib; sourceTree = "<group>"; };
+		26F9FABA1D1D09A400BBD9A5 /* GroupModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupModel.h; sourceTree = "<group>"; };
+		26F9FABB1D1D09A400BBD9A5 /* GroupModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupModel.m; sourceTree = "<group>"; };
 		8480B59519889B900074F0A1 /* CombinationPickerContoller.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CombinationPickerContoller.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8480B59819889B900074F0A1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		8480B59C19889B900074F0A1 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -210,6 +223,12 @@
 				84AED3B5198F81A500486ACB /* ODMCollectionViewCell.m */,
 				84AED3B6198F81A500486ACB /* ODMCombinationPickerViewController.h */,
 				84AED3B7198F81A500486ACB /* ODMCombinationPickerViewController.m */,
+				26F9FAAD1D1BF1CD00BBD9A5 /* ODMTableViewCell.h */,
+				26F9FAAE1D1BF1CD00BBD9A5 /* ODMTableViewCell.m */,
+				26F9FAB21D1CDA5600BBD9A5 /* ODMGroupViewController.h */,
+				26F9FAB31D1CDA5600BBD9A5 /* ODMGroupViewController.m */,
+				26F9FABA1D1D09A400BBD9A5 /* GroupModel.h */,
+				26F9FABB1D1D09A400BBD9A5 /* GroupModel.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -217,8 +236,10 @@
 		84AED3AF198F817D00486ACB /* Xib */ = {
 			isa = PBXGroup;
 			children = (
+				26F9FAAF1D1BF1CD00BBD9A5 /* ODMTableViewCell.xib */,
 				84AED3B0198F819600486ACB /* ODMCollectionViewCell.xib */,
 				84AED3B1198F819600486ACB /* ODMCombinationPickerViewController.xib */,
+				26F9FAB41D1CDA5600BBD9A5 /* ODMGroupViewController.xib */,
 			);
 			name = Xib;
 			sourceTree = "<group>";
@@ -303,12 +324,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				26F9FAB11D1BF1CD00BBD9A5 /* ODMTableViewCell.xib in Resources */,
 				84A0906F198B4D9E006274CF /* IconImages.xcassets in Resources */,
 				84AED3B3198F819600486ACB /* ODMCombinationPickerViewController.xib in Resources */,
 				84AED3B2198F819600486ACB /* ODMCollectionViewCell.xib in Resources */,
 				8480B5B119889B900074F0A1 /* Images.xcassets in Resources */,
 				8480B5A319889B900074F0A1 /* InfoPlist.strings in Resources */,
 				8480B5AC19889B900074F0A1 /* Main.storyboard in Resources */,
+				26F9FAB61D1CDA5600BBD9A5 /* ODMGroupViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -377,9 +400,12 @@
 			files = (
 				8480B5A519889B900074F0A1 /* main.m in Sources */,
 				84AED3B8198F81A500486ACB /* ODMCollectionViewCell.m in Sources */,
+				26F9FAB01D1BF1CD00BBD9A5 /* ODMTableViewCell.m in Sources */,
 				84AED3B9198F81A500486ACB /* ODMCombinationPickerViewController.m in Sources */,
 				849DF4D2198A231F00EE06A4 /* ODMViewController.m in Sources */,
 				8480B5A919889B900074F0A1 /* ODMAppDelegate.m in Sources */,
+				26F9FAB51D1CDA5600BBD9A5 /* ODMGroupViewController.m in Sources */,
+				26F9FABC1D1D09A400BBD9A5 /* GroupModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
