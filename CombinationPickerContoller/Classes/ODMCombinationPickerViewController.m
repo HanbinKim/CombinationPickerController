@@ -41,6 +41,8 @@
 {
     [super viewDidLoad];
     
+
+    
     if (self.cameraImage == nil) {
         self.cameraImage = [UIImage imageNamed:@"camera-icon"];
     }
@@ -106,6 +108,8 @@
         
         [self viewForAuthorizationStatus];
         
+        NSLog(@"%@",group);
+        
         ALAssetsFilter *onlyPhotosFilter = [ALAssetsFilter allPhotos];
         [group setAssetsFilter:onlyPhotosFilter];
         if ([group numberOfAssets] > 0)
@@ -127,7 +131,7 @@
                 [self.groups insertObject:group atIndex:0];
                 
             }
-            else {
+            else if([[group valueForProperty:ALAssetsGroupPropertyType] intValue] != ALAssetsGroupPhotoStream){
                 [self.groups addObject:group];
             }
         }
@@ -514,6 +518,7 @@
 {
     UIImage *originImage = [info objectForKey:UIImagePickerControllerOriginalImage];
     ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+    
     [library writeImageToSavedPhotosAlbum:originImage.CGImage
                                  metadata:[info objectForKey:UIImagePickerControllerMediaMetadata]
                           completionBlock:^(NSURL *assetURL, NSError *error) {
