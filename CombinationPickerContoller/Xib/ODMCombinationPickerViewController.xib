@@ -35,7 +35,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WcQ-fW-JHS">
-                            <rect key="frame" x="12" y="33" width="17" height="17"/>
+                            <rect key="frame" x="5" y="31" width="17" height="21"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="17" id="X5q-OH-3FP"/>
                             </constraints>
@@ -66,12 +66,12 @@
                         <constraint firstAttribute="centerX" secondItem="NXc-j5-7LX" secondAttribute="centerX" id="5qD-Il-Q9n"/>
                         <constraint firstItem="NXc-j5-7LX" firstAttribute="centerY" secondItem="WcQ-fW-JHS" secondAttribute="centerY" id="CRU-Dw-SEC"/>
                         <constraint firstItem="bkN-s0-JSJ" firstAttribute="top" secondItem="pgt-ON-nkr" secondAttribute="top" constant="27" id="H5S-ui-qET"/>
-                        <constraint firstAttribute="bottom" secondItem="WcQ-fW-JHS" secondAttribute="bottom" constant="14" id="HsA-er-Fd4"/>
-                        <constraint firstItem="NXc-j5-7LX" firstAttribute="leading" secondItem="WcQ-fW-JHS" secondAttribute="trailing" constant="41" id="JUO-9n-deU"/>
-                        <constraint firstItem="WcQ-fW-JHS" firstAttribute="top" secondItem="pgt-ON-nkr" secondAttribute="top" constant="33" id="NlY-FK-Rbm"/>
+                        <constraint firstAttribute="bottom" secondItem="WcQ-fW-JHS" secondAttribute="bottom" constant="12" id="HsA-er-Fd4"/>
+                        <constraint firstItem="NXc-j5-7LX" firstAttribute="leading" secondItem="WcQ-fW-JHS" secondAttribute="trailing" constant="48" id="JUO-9n-deU"/>
+                        <constraint firstItem="WcQ-fW-JHS" firstAttribute="top" secondItem="pgt-ON-nkr" secondAttribute="top" constant="31" id="NlY-FK-Rbm"/>
                         <constraint firstAttribute="bottom" secondItem="bkN-s0-JSJ" secondAttribute="bottom" constant="7" id="Uew-67-8CJ"/>
                         <constraint firstAttribute="trailing" secondItem="bkN-s0-JSJ" secondAttribute="trailing" constant="11" id="k9G-Pp-j5U"/>
-                        <constraint firstItem="WcQ-fW-JHS" firstAttribute="leading" secondItem="pgt-ON-nkr" secondAttribute="leading" constant="12" id="rFy-qi-BFH"/>
+                        <constraint firstItem="WcQ-fW-JHS" firstAttribute="leading" secondItem="pgt-ON-nkr" secondAttribute="leading" constant="5" id="rFy-qi-BFH"/>
                     </constraints>
                 </view>
                 <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Eth-sw-4ZK">
@@ -146,6 +146,6 @@
         </view>
     </objects>
     <resources>
-        <image name="odm_btn_back" width="17" height="17"/>
+        <image name="odm_btn_back" width="13" height="21"/>
     </resources>
 </document>
