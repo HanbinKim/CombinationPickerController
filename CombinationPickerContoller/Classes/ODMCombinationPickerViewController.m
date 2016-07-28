@@ -102,6 +102,9 @@
         if ([self.assetsGroup numberOfAssets] - 1 == index) {
             
             [self.collectionView reloadData];
+            if(_havePlaceData) {
+                [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:[self.assets count]-1 inSection:0] atScrollPosition:UICollectionViewScrollPositionBottom animated:NO];
+            }
             [MBProgressHUD dismissGlobalHUD];
             
         }
@@ -296,6 +299,7 @@
     }
     
     [self.collectionView reloadData];
+
     [self checkDoneButton];
 }
 
@@ -343,6 +347,10 @@
                 [self addImageFirstRow];
     
                 [self.collectionView reloadData];
+                if(_havePlaceData) {
+                    [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:[self.assets count]-1 inSection:0] atScrollPosition:UICollectionViewScrollPositionBottom animated:NO];
+                }
+                
                 
                 [self setNavigationTitle:[model title]];
             }
