@@ -11,6 +11,8 @@
 #import "KxMenu.h"
 #import "ODMGroupViewController.h"
 #import "GroupModel.h"
+#import "MBProgressHUD+ODM.h"
+
 
 @interface ODMCombinationPickerViewController ()<ODMGroupViewControllerDelegate>
 
@@ -42,7 +44,7 @@
     [super viewDidLoad];
     
 
-    
+    [MBProgressHUD showGlobalProgressHUDWithTitle:nil];
     if (self.cameraImage == nil) {
         self.cameraImage = [UIImage imageNamed:@"camera-icon"];
     }
@@ -100,6 +102,7 @@
         if ([self.assetsGroup numberOfAssets] - 1 == index) {
             
             [self.collectionView reloadData];
+            [MBProgressHUD dismissGlobalHUD];
             
         }
     };
@@ -131,9 +134,9 @@
                 [self.groups insertObject:group atIndex:0];
                 
             }
-            else if([[group valueForProperty:ALAssetsGroupPropertyType] intValue] != ALAssetsGroupPhotoStream){
+//            else if([[group valueForProperty:ALAssetsGroupPropertyType] intValue] != ALAssetsGroupPhotoStream){
                 [self.groups addObject:group];
-            }
+//            }
         }
         
         
@@ -297,11 +300,10 @@
 }
 
 - (void)changeGroup:(id)sender {
-    GroupModel *modle = (GroupModel *)sender;
+    GroupModel *model = (GroupModel *)sender;
         for (ALAssetsGroup *group in self.groups) {
-            if ([[group valueForProperty:ALAssetsGroupPropertyName] isEqualToString:[modle title]]) {
+            if ([[group valueForProperty:ALAssetsGroupPropertyName] isEqualToString:[model title]]) {
                 self.assetsGroup = group;
-    
                 ALAssetsGroupEnumerationResultsBlock assetsEnumerationBlock = ^(ALAsset *result, NSUInteger index, BOOL *stop) {
     
                     if (result) {
@@ -310,7 +312,6 @@
                                 NSDateFormatter *dateFormatter = [NSDateFormatter new];
                                 [dateFormatter setDateFormat:@"yyyyMMdd"];
                                 NSDate *compareDate = [result valueForProperty:ALAssetPropertyDate];
-    
     
                                 if([[dateFormatter stringFromDate:_nextDate] integerValue] < [[dateFormatter
                                     stringFromDate:compareDate] integerValue]) {
@@ -343,7 +344,7 @@
     
                 [self.collectionView reloadData];
                 
-                [self setNavigationTitle:[modle title]];
+                [self setNavigationTitle:[model title]];
             }
         }
         
