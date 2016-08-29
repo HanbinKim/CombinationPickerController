@@ -44,7 +44,7 @@
 {
     [super viewDidLoad];
     
-
+    
     [MBProgressHUD showGlobalProgressHUDWithTitle:nil];
     if (self.cameraImage == nil) {
         self.cameraImage = [UIImage imageNamed:@"camera-icon"];
@@ -78,6 +78,7 @@
     userAlbumsOptions.predicate = [NSPredicate predicateWithFormat:@"estimatedAssetCount > 0"];
     
     PHFetchResult *userAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum subtype:PHAssetCollectionSubtypeAny options:userAlbumsOptions];
+    
     
     [userAlbums enumerateObjectsUsingBlock:^(PHAssetCollection *collection, NSUInteger idx, BOOL *stop) {
         [self viewForAuthorizationStatus];
@@ -157,7 +158,7 @@
     cell.selectionHighlightColor = self.selectionHighlightColor ? self.selectionHighlightColor :cell.selectionHighlightColor;
     
     
-
+    
     [self getImageForAsset:_photos[indexPath.row] andTargetSize:CGSizeMake(200, 200) andSuccessBlock:^(UIImage *photoObj) {
         dispatch_async(dispatch_get_main_queue(), ^{
             cell.imageView.image=photoObj;
@@ -228,16 +229,15 @@
     }
     [self.collectionView reloadItemsAtIndexPaths:@[indexPath]];
     
-
+    
     [self checkDoneButton];
 }
 
 - (void)changeGroup:(id)sender {
-//    GroupModel *model = (GroupModel *)sender;
-    if([sender isKindOfClass:[PHCollection class]]) {
-        self.photos = [PHAsset fetchAssetsInAssetCollection:sender options:nil];
-        [self.collectionView reloadData];
-        PHCollection *collection = sender;
+    //    GroupModel *model = (GroupModel *)sender;
+    if([sender isKindOfClass:[PHAssetCollection class]]) {
+        [self getPhotosWithCollection:sender];
+        PHAssetCollection *collection = sender;
         [self setNavigationTitle:collection.localizedTitle];
         currentSelectedIndex = nil;
         [self showGroupView];
@@ -285,7 +285,7 @@
 
 - (IBAction)showMenu:(UIView *)sender
 {
-
+    
     
     if(!self.groupViewController) {
         self.groupViewController = [[ODMGroupViewController alloc] init];
@@ -324,7 +324,7 @@
     if(self.didFinishPickingAsset) {
         self.didFinishPickingAsset(self, self.photos[currentSelectedIndex.row]);
     }
-
+    
     if ([self.delegate respondsToSelector:@selector(imagePickerController:didFinishPickingAsset:)]) {
         
         [self.delegate imagePickerController:self didFinishPickingAsset:self.photos[currentSelectedIndex.row]];
@@ -344,27 +344,6 @@
         [self.delegate imagePickerController:self didFinishPickingAsset:asset];
     }
     
-//    [library writeImageToSavedPhotosAlbum:originImage.CGImage
-//                                 metadata:[info objectForKey:UIImagePickerControllerMediaMetadata]
-//                          completionBlock:^(NSURL *assetURL, NSError *error) {
-//                              
-//                              [library assetForURL:assetURL resultBlock:^(ALAsset *asset) {
-//
-//                                  if(self.didFinishPickingAsset) {
-//                                      self.didFinishPickingAsset(self, asset);
-//                                  }
-//
-//                                  if ([self.delegate respondsToSelector:@selector(imagePickerController:didFinishPickingAsset:)]) {
-//                                      [self.delegate imagePickerController:self didFinishPickingAsset:asset];
-//                                  }
-//                                  
-//                              } failureBlock:^(NSError *error) {
-//                                  
-//                                  NSLog(@"error couldn't get photo");
-//                                  
-//                              }];
-//                              
-//                          }];
 }
 
 - (IBAction)cancel:(id)sender
@@ -372,7 +351,7 @@
     if(self.didCancel) {
         self.didCancel(self);
     }
-
+    
     if ([self.delegate respondsToSelector:@selector(imagePickerControllerDidCancel:)]) {
         [self.delegate imagePickerControllerDidCancel:self];
     }
@@ -447,6 +426,7 @@
 }
 
 - (void)getCameraRollPhoto {
+    _photos = [NSMutableArray new];
     PHFetchOptions *allPhotosOptions = [PHFetchOptions new];
     if(_nextDate) {
         allPhotosOptions.predicate = [NSPredicate predicateWithFormat:@"mediaType = %i AND creationDate > %@", PHAssetMediaTypeImage, _nextDate];
@@ -455,7 +435,43 @@
         allPhotosOptions.predicate = [NSPredicate predicateWithFormat:@"mediaType = %i", PHAssetMediaTypeImage];
     }
     allPhotosOptions.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
-    _photos = [PHAsset fetchAssetsWithMediaType:PHAssetMediaTypeImage options:allPhotosOptions];
+    PHFetchResult *result = [PHAsset fetchAssetsWithMediaType:PHAssetMediaTypeImage options:allPhotosOptions];
+    
+    [result enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        PHAsset *photo = obj;
+        if(_havePlaceData) {
+            if(photo.location) {
+                [_photos addObject:photo];
+            }
+        }
+        else {
+            [_photos addObject:photo];
+        }
+    }];
+}
+
+- (void)getPhotosWithCollection : (PHAssetCollection *)collection {
+    _photos = [NSMutableArray new];
+    PHFetchOptions *allPhotosOptions = [PHFetchOptions new];
+    if(_nextDate) {
+        allPhotosOptions.predicate = [NSPredicate predicateWithFormat:@"mediaType = %i AND creationDate > %@", PHAssetMediaTypeImage, _nextDate];
+    }
+    else {
+        allPhotosOptions.predicate = [NSPredicate predicateWithFormat:@"mediaType = %i", PHAssetMediaTypeImage];
+    }
+
+    PHFetchResult *result = [PHAsset fetchAssetsInAssetCollection:collection options:allPhotosOptions];
+    [result enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        PHAsset *photo = obj;
+        if(_havePlaceData) {
+            if(photo.location) {
+                [_photos addObject:photo];
+            }
+        }
+        else {
+            [_photos addObject:photo];
+        }
+    }];
 }
 
 

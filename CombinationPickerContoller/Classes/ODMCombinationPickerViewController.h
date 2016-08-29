@@ -22,7 +22,7 @@ static NSString *CellIdentifier = @"photoCell";
     NSIndexPath *currentSelectedIndex;
     NSIndexPath *previousSelectedIndex;
 }
-@property (nonatomic, strong) PHFetchResult *photos;
+@property (nonatomic, strong) NSMutableArray *photos;
 @property (nonatomic, strong) NSMutableArray *assets;
 @property (nonatomic, strong) ALAssetsGroup *assetsGroup;
 @property (nonatomic, strong) ALAssetsLibrary *assetsLibrary;
