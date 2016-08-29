@@ -61,7 +61,13 @@ static NSString *CellIdentifier = @"groupCell";
     if(cell == nil) {
         cell = [[NSBundle mainBundle] loadNibNamed:@"ODMTableViewCell" owner:self options:nil][0];
     }
-    [cell setCell:_groups[indexPath.row]];
+    if([_groups[indexPath. row] isKindOfClass:[NSString class]]) {
+        cell.groupNameLabel.text = _groups[indexPath.row];
+        [cell setImageView:nil];
+    }
+    else {
+        [cell setCell:_groups[indexPath.row]];
+    }
     
     
     return cell;

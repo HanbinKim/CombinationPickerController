@@ -7,6 +7,7 @@
 //
 
 #import "ODMViewController.h"
+#import <Photos/Photos.h>
 
 @interface ODMViewController ()
 
@@ -60,13 +61,16 @@
     
 }
 
-- (void)imagePickerController:(ODMCombinationPickerViewController *)picker didFinishPickingAsset:(ALAsset *)asset
+- (void)imagePickerController:(ODMCombinationPickerViewController *)picker didFinishPickingAsset:(PHAsset *)phasset
 {
-    
-    ALAssetRepresentation *rep = [asset defaultRepresentation];
-    CGImageRef iref = [rep fullResolutionImage];
-    
-    self.selectedImageView.image = [UIImage imageWithCGImage:iref];
+    [self getImageForAsset:phasset andTargetSize:CGSizeMake(200, 200) andSuccessBlock:^(UIImage *photoObj) {
+        self.selectedImageView.image = photoObj;
+    }];
+//    
+//    ALAssetRepresentation *rep = [asset defaultRepresentation];
+//    CGImageRef iref = [rep fullResolutionImage];
+//    
+//    self.selectedImageView.image = [UIImage imageWithCGImage:iref];
     
     [self dismissViewControllerAnimated:YES completion:nil];
     
@@ -79,6 +83,32 @@
 
     [self presentViewController:vc animated:YES completion:nil];
 }
+
+-(void) getImageForAsset: (PHAsset *) asset andTargetSize: (CGSize) targetSize andSuccessBlock:(void (^)(UIImage * photoObj))successBlock {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        PHImageRequestOptions *requestOptions;
+        
+        requestOptions = [[PHImageRequestOptions alloc] init];
+        requestOptions.resizeMode   = PHImageRequestOptionsResizeModeFast;
+        requestOptions.deliveryMode = PHImageRequestOptionsDeliveryModeFastFormat;
+        requestOptions.synchronous = true;
+        requestOptions.networkAccessAllowed = YES;
+        PHImageManager *manager = [PHImageManager defaultManager];
+        [manager requestImageForAsset:asset
+                           targetSize:targetSize
+                          contentMode:PHImageContentModeDefault
+                              options:requestOptions
+                        resultHandler:^void(UIImage *image, NSDictionary *info) {
+                            @autoreleasepool {
+                                if(image!=nil){
+                                    successBlock(image);
+                                }
+                            }
+                        }];
+    });
+    
+}
+
 
 
 @end

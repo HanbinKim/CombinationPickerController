@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "GroupModel.h"
+#import <Photos/Photos.h>
 
 @interface ODMTableViewCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UIImageView *firstPhotoImageView;
@@ -15,5 +16,5 @@
 @property (weak, nonatomic) IBOutlet UILabel *groupPhotoCountLabel;
 
 - (void)setCell : (GroupModel *)model;
-
+- (void)setImageView : (PHAssetCollection *)collection;
 @end

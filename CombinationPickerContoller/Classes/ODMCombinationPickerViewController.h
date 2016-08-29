@@ -10,6 +10,7 @@ static NSString *CellIdentifier = @"photoCell";
 
 #import <UIKit/UIKit.h>
 #import <AssetsLibrary/AssetsLibrary.h>
+#import <Photos/Photos.h>
 
 @protocol ODMCombinationPickerViewControllerDelegate;
 
@@ -21,6 +22,7 @@ static NSString *CellIdentifier = @"photoCell";
     NSIndexPath *currentSelectedIndex;
     NSIndexPath *previousSelectedIndex;
 }
+@property (nonatomic, strong) PHFetchResult *photos;
 @property (nonatomic, strong) NSMutableArray *assets;
 @property (nonatomic, strong) ALAssetsGroup *assetsGroup;
 @property (nonatomic, strong) ALAssetsLibrary *assetsLibrary;
@@ -40,7 +42,7 @@ static NSString *CellIdentifier = @"photoCell";
 @property (nonatomic, assign) BOOL havePlaceData;
 @property (nonatomic, strong) NSDate *nextDate;
 
-@property (nonatomic, copy) void (^didFinishPickingAsset)(ODMCombinationPickerViewController *,ALAsset *);
+@property (nonatomic, copy) void (^didFinishPickingAsset)(ODMCombinationPickerViewController *,PHAsset *);
 @property (nonatomic, copy) void (^didCancel)(ODMCombinationPickerViewController *);
 
 @property (nonatomic, weak) id<ODMCombinationPickerViewControllerDelegate> delegate;
@@ -55,7 +57,7 @@ static NSString *CellIdentifier = @"photoCell";
 
 @optional
 
-- (void)imagePickerController:(ODMCombinationPickerViewController *)picker didFinishPickingAsset:(ALAsset *)asset;
+- (void)imagePickerController:(ODMCombinationPickerViewController *)picker didFinishPickingAsset:(PHAsset *)phasset;
 - (void)imagePickerControllerDidCancel:(ODMCombinationPickerViewController *)picker;
 
 @end

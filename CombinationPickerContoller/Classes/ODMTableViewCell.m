@@ -7,7 +7,7 @@
 //
 
 #import "ODMTableViewCell.h"
-#import <AssetsLibrary/ALAsset.h>
+#import <Photos/Photos.h>
 
 @implementation ODMTableViewCell
 
@@ -22,10 +22,37 @@
     // Configure the view for the selected state
 }
 
-- (void)setCell : (GroupModel *)model {
-    [_firstPhotoImageView setImage:model.asset];
-    _groupNameLabel.text = model.title;
-    _groupPhotoCountLabel.text = [NSString stringWithFormat:@"%ld",model.photoCount];
+- (void)setCell : (PHAssetCollection *)collection {
+    _groupNameLabel.text = collection.localizedTitle;
+    if(collection) {
+        [self setImageView:collection];
+    }
 }
+
+- (void)setImageView : (PHAssetCollection *)collection{
+    PHFetchOptions *fetchOptions = [[PHFetchOptions alloc] init];
+    fetchOptions.predicate = [NSPredicate predicateWithFormat:@"mediaType = %i", PHAssetMediaTypeImage];
+    fetchOptions.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
+    PHFetchResult *fetchResult;
+    if(collection == nil) {
+        fetchResult = [PHAsset fetchAssetsWithMediaType:PHAssetMediaTypeImage options:fetchOptions];
+    }
+    else {
+        fetchResult = [PHAsset fetchKeyAssetsInAssetCollection:collection options:fetchOptions];
+    }
+    PHAsset *asset = [fetchResult firstObject];
+    PHImageRequestOptions *options = [[PHImageRequestOptions alloc] init];
+    options.resizeMode = PHImageRequestOptionsResizeModeExact;
+    
+    CGFloat scale = [UIScreen mainScreen].scale;
+    CGFloat dimension = 78.0f;
+    CGSize size = CGSizeMake(dimension*scale, dimension*scale);
+    
+    [[PHImageManager defaultManager] requestImageForAsset:asset targetSize:size contentMode:PHImageContentModeAspectFill options:options resultHandler:^(UIImage *result, NSDictionary *info) {
+        _firstPhotoImageView.image = result;
+    }];
+}
+
+
 
 @end

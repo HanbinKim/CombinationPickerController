@@ -12,6 +12,7 @@
 #import "ODMGroupViewController.h"
 #import "GroupModel.h"
 #import "MBProgressHUD+ODM.h"
+#import <Photos/Photos.h>
 
 
 @interface ODMCombinationPickerViewController ()<ODMGroupViewControllerDelegate>
@@ -71,89 +72,22 @@
         [self.assets removeAllObjects];
     }
     
-    ALAssetsGroupEnumerationResultsBlock assetsEnumerationBlock = ^(ALAsset *result, NSUInteger index, BOOL *stop) {
-        
-        if (result) {
-            if(_nextDate != nil) {
-                if([result valueForProperty:ALAssetTypePhoto] && [result valueForProperty:ALAssetPropertyLocation] != nil) {
-                    NSDateFormatter *dateFormatter = [NSDateFormatter new];
-                    [dateFormatter setDateFormat:@"yyyyMMdd"];
-                    NSDate *compareDate = [result valueForProperty:ALAssetPropertyDate];
-                    
-                    
-                    if([[dateFormatter stringFromDate:_nextDate] integerValue] < [[dateFormatter
-                                                                                   stringFromDate:compareDate] integerValue]) {
-                        [self.assets insertObject:result atIndex:0];
-                    }
-                }
-            }
-            else if(_havePlaceData) {
-                if([result valueForProperty:ALAssetTypePhoto] && [result valueForProperty:ALAssetPropertyLocation] != nil) {
-                    [self.assets insertObject:result atIndex:0];
-                }
-            }
-            else {
-                if([result valueForProperty:ALAssetTypePhoto]) {
-                    [self.assets insertObject:result atIndex:0];
-                }
-            }
-        }
-        
-        if ([self.assetsGroup numberOfAssets] - 1 == index) {
-            
-            [self.collectionView reloadData];
-            if(_nextDate) {
-                [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:[self.assets count]-1 inSection:0] atScrollPosition:UICollectionViewScrollPositionBottom animated:NO];
-            }
-            [MBProgressHUD dismissGlobalHUD];
-            
-        }
-    };
+    [self getCameraRollPhoto];
     
-    ALAssetsLibraryGroupsEnumerationResultsBlock listGroupBlock = ^(ALAssetsGroup *group, BOOL *stop) {
-        
+    PHFetchOptions *userAlbumsOptions = [PHFetchOptions new];
+    userAlbumsOptions.predicate = [NSPredicate predicateWithFormat:@"estimatedAssetCount > 0"];
+    
+    PHFetchResult *userAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum subtype:PHAssetCollectionSubtypeAny options:userAlbumsOptions];
+    
+    [userAlbums enumerateObjectsUsingBlock:^(PHAssetCollection *collection, NSUInteger idx, BOOL *stop) {
         [self viewForAuthorizationStatus];
-        
-        NSLog(@"%@",group);
-        
-        ALAssetsFilter *onlyPhotosFilter = [ALAssetsFilter allPhotos];
-        [group setAssetsFilter:onlyPhotosFilter];
-        if ([group numberOfAssets] > 0)
-        {
-            if ([[group valueForProperty:ALAssetsGroupPropertyType] intValue] == ALAssetsGroupSavedPhotos) {
-                
-                self.assetsGroup = group;
-                
-                if (self.assets.count == 0) {
-                    
-                    [self.assetsGroup enumerateAssetsUsingBlock:assetsEnumerationBlock];
-                    
-                    [self addImageFirstRow];
-                    
-                }
-                
-                [self setNavigationTitle:[group valueForProperty:ALAssetsGroupPropertyName]];
-                
-                [self.groups insertObject:group atIndex:0];
-                
-            }
-//            else if([[group valueForProperty:ALAssetsGroupPropertyType] intValue] != ALAssetsGroupPhotoStream){
-                [self.groups addObject:group];
-//            }
+        if(idx == 0) {
+            [self.groups addObject:@"Camera Roll"];
         }
-        
-        
-    };
-    
-    // enumerate only photos
-    NSUInteger groupTypes = ALAssetsGroupAll;
-    
-    [self.assetsLibrary enumerateGroupsWithTypes:groupTypes usingBlock:listGroupBlock failureBlock:^(NSError *error) {
-        [self viewForAuthorizationStatus];
+        [self.groups addObject:collection];
     }];
-    
-    ALAssetsFilter *onlyPhotosFilter = [ALAssetsFilter allPhotos];
-    [self.assetsGroup setAssetsFilter:onlyPhotosFilter];
+    [self.collectionView reloadData];
+    [MBProgressHUD dismissGlobalHUD];
     
     [self checkDoneButton];
 }
@@ -212,7 +146,7 @@
 
 - (NSInteger)collectionView:(UICollectionView *)view numberOfItemsInSection:(NSInteger)section
 {
-    return self.assets.count;
+    return [_photos count];;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)cv cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -222,34 +156,25 @@
     cell.selectionBorderWidth = self.selectionBorderWidth ? self.selectionBorderWidth : cell.selectionBorderWidth;
     cell.selectionHighlightColor = self.selectionHighlightColor ? self.selectionHighlightColor :cell.selectionHighlightColor;
     
-    ALAsset *asset;
-    CGImageRef thumbnailImageRef;
-    UIImage *thumbnail;
     
-    if ([self.assets[indexPath.row] isKindOfClass:[UIImage class]]) {
-        
-        thumbnail = self.assets[indexPath.row];
-        
-    } else {
-        
-        asset = self.assets[indexPath.row];
-        thumbnailImageRef = [asset aspectRatioThumbnail];
-        if (thumbnailImageRef == nil) {
-            thumbnailImageRef = [asset thumbnail];
-        }
-        thumbnail = [UIImage imageWithCGImage:thumbnailImageRef];
-        
-    }
+
+    [self getImageForAsset:_photos[indexPath.row] andTargetSize:CGSizeMake(200, 200) andSuccessBlock:^(UIImage *photoObj) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            cell.imageView.image=photoObj;
+            BOOL isSelected = [indexPath isEqual:currentSelectedIndex];
+            BOOL isDeselectedShouldAnimate = currentSelectedIndex == nil && [indexPath isEqual:previousSelectedIndex];
+            
+            [cell setHightlightBackground:isSelected withAimate:isDeselectedShouldAnimate];
+        });
+    }];
     
-    cell.imageView.image = thumbnail;
     
-    BOOL isSelected = [indexPath isEqual:currentSelectedIndex];
-    BOOL isDeselectedShouldAnimate = currentSelectedIndex == nil && [indexPath isEqual:previousSelectedIndex];
     
-    [cell setHightlightBackground:isSelected withAimate:isDeselectedShouldAnimate];
     
     return cell;
 }
+
+
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -279,12 +204,13 @@
             picker.delegate = self;
             picker.sourceType = UIImagePickerControllerSourceTypeCamera;
             [self presentViewController:picker animated:YES completion:NULL];
-            
         }
         
     } else {
         
         previousSelectedIndex = currentSelectedIndex;
+        
+        
         
         if ([currentSelectedIndex isEqual:indexPath] ) {
             
@@ -297,123 +223,35 @@
         }
         
     }
+    if(previousSelectedIndex) {
+        [self.collectionView reloadItemsAtIndexPaths:@[previousSelectedIndex]];
+    }
+    [self.collectionView reloadItemsAtIndexPaths:@[indexPath]];
     
-    [self.collectionView reloadData];
 
     [self checkDoneButton];
 }
 
 - (void)changeGroup:(id)sender {
-    GroupModel *model = (GroupModel *)sender;
-        for (ALAssetsGroup *group in self.groups) {
-            if ([[group valueForProperty:ALAssetsGroupPropertyName] isEqualToString:[model title]]) {
-                self.assetsGroup = group;
-                ALAssetsGroupEnumerationResultsBlock assetsEnumerationBlock = ^(ALAsset *result, NSUInteger index, BOOL *stop) {
-    
-                    if (result) {
-                        if(_nextDate != nil) {
-                            if([result valueForProperty:ALAssetTypePhoto] && [result valueForProperty:ALAssetPropertyLocation] != nil) {
-                                NSDateFormatter *dateFormatter = [NSDateFormatter new];
-                                [dateFormatter setDateFormat:@"yyyyMMdd"];
-                                NSDate *compareDate = [result valueForProperty:ALAssetPropertyDate];
-    
-                                if([[dateFormatter stringFromDate:_nextDate] integerValue] < [[dateFormatter
-                                    stringFromDate:compareDate] integerValue]) {
-                                    [self.assets insertObject:result atIndex:0];
-                                }
-                            }
-                        }
-                        else if(_havePlaceData) {
-                            if([result valueForProperty:ALAssetTypePhoto] && [result valueForProperty:ALAssetPropertyLocation] != nil) {
-                                [self.assets insertObject:result atIndex:0];
-                            }
-                        }
-                        else {
-                            if([result valueForProperty:ALAssetTypePhoto]) {
-                                [self.assets insertObject:result atIndex:0];
-                            }
-                        }
-                    }
-                };
-    
-                if (!self.assets) {
-                    _assets = [[NSMutableArray alloc] init];
-                } else {
-                    [self.assets removeAllObjects];
-                }
-    
-                [self.assetsGroup enumerateAssetsUsingBlock:assetsEnumerationBlock];
-    
-                [self addImageFirstRow];
-    
-                [self.collectionView reloadData];
-                if(_nextDate) {
-                    [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:[self.assets count]-1 inSection:0] atScrollPosition:UICollectionViewScrollPositionBottom animated:NO];
-                }
-                
-                
-                [self setNavigationTitle:[model title]];
-            }
-        }
-        
+//    GroupModel *model = (GroupModel *)sender;
+    if([sender isKindOfClass:[PHCollection class]]) {
+        self.photos = [PHAsset fetchAssetsInAssetCollection:sender options:nil];
+        [self.collectionView reloadData];
+        PHCollection *collection = sender;
+        [self setNavigationTitle:collection.localizedTitle];
         currentSelectedIndex = nil;
-    [self showGroupView];
+        [self showGroupView];
+    }
+    else {
+        [self getCameraRollPhoto];
+        [self.collectionView reloadData];
+        [self setNavigationTitle:@"Camera Roll"];
+        currentSelectedIndex = nil;
+        [self showGroupView];
+    }
+    
 }
 
-//- (void)changeGroup:(KxMenuItem *)menu
-//{
-//    for (ALAssetsGroup *group in self.groups) {
-//        if ([[group valueForProperty:ALAssetsGroupPropertyName] isEqualToString:[menu title]]) {
-//            self.assetsGroup = group;
-//            
-//            ALAssetsGroupEnumerationResultsBlock assetsEnumerationBlock = ^(ALAsset *result, NSUInteger index, BOOL *stop) {
-//                
-//                if (result) {
-//                    if(_nextDate != nil) {
-//                        if([result valueForProperty:ALAssetTypePhoto] && [result valueForProperty:ALAssetPropertyLocation] != nil) {
-//                            NSDateFormatter *dateFormatter = [NSDateFormatter new];
-//                            [dateFormatter setDateFormat:@"yyyyMMdd"];
-//                            NSDate *compareDate = [result valueForProperty:ALAssetPropertyDate];
-//                            
-//                            
-//                            if([[dateFormatter stringFromDate:_nextDate] integerValue] < [[dateFormatter
-//                                stringFromDate:compareDate] integerValue]) {
-//                                [self.assets insertObject:result atIndex:0];
-//                            }
-//                        }
-//                    }
-//                    else if(_havePlaceData) {
-//                        if([result valueForProperty:ALAssetTypePhoto] && [result valueForProperty:ALAssetPropertyLocation] != nil) {
-//                            [self.assets insertObject:result atIndex:0];
-//                        }
-//                    }
-//                    else {
-//                        if([result valueForProperty:ALAssetTypePhoto]) {
-//                            [self.assets insertObject:result atIndex:0];
-//                        }
-//                    }
-//                }
-//            };
-//            
-//            if (!self.assets) {
-//                _assets = [[NSMutableArray alloc] init];
-//            } else {
-//                [self.assets removeAllObjects];
-//            }
-//            
-//            [self.assetsGroup enumerateAssetsUsingBlock:assetsEnumerationBlock];
-//            
-//            [self addImageFirstRow];
-//            
-//            [self.collectionView reloadData];
-//            
-//            [self setNavigationTitle:[menu title]];
-//        }
-//    }
-//    
-//    currentSelectedIndex = nil;
-//}
-//
 
 - (void)addImageFirstRow
 {
@@ -447,7 +285,7 @@
 
 - (IBAction)showMenu:(UIView *)sender
 {
-    NSMutableArray *menuItems = [[NSMutableArray alloc] init];
+
     
     if(!self.groupViewController) {
         self.groupViewController = [[ODMGroupViewController alloc] init];
@@ -457,40 +295,9 @@
     }
     [self showGroupView];
     
-
-    __block ALAsset *asset;
-    for (ALAssetsGroup *group in self.groups) {
-        
-//        [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
-////            if(!asset) {
-//                asset = result;
-////            }
-//            if(index == 1) {
-//                *stop = YES;
-//            }
-//            UIImage *image = [UIImage imageWithCGImage:[asset aspectRatioThumbnail]];
-//            NSLog(@"%@ggggg@",image);
-//
-//        }];
-        NSLog(@"%@",[UIImage imageWithCGImage:[group posterImage]]);
-        GroupModel *model = [[GroupModel alloc] initForTitle:[group valueForProperty:ALAssetsGroupPropertyName] firstAlasset:[UIImage imageWithCGImage:[group posterImage]] photoCount:group.numberOfAssets];
-        [menuItems addObject:model];
-    }
-    //
-    //        [menuItems addObject:[KxMenuItem menuItem:[group valueForProperty:ALAssetsGroupPropertyName]
-    //                                            image:nil
-    //                                           target:self
-    //                                           action:@selector(changeGroup:)]];
-    
-    self.groupViewController.groups = menuItems;
+    self.groupViewController.groups = _groups;
     [self.groupViewController.tableView reloadData];
     
-//
-//    if (menuItems.count) {
-//        [KxMenu showMenuInView:self.view
-//                      fromRect:sender.frame
-//                     menuItems:menuItems];
-//    }
 }
 
 - (void)showGroupView {
@@ -515,41 +322,49 @@
 - (IBAction)done:(id)sender
 {
     if(self.didFinishPickingAsset) {
-        self.didFinishPickingAsset(self, self.assets[currentSelectedIndex.row]);
+        self.didFinishPickingAsset(self, self.photos[currentSelectedIndex.row]);
     }
 
     if ([self.delegate respondsToSelector:@selector(imagePickerController:didFinishPickingAsset:)]) {
         
-        [self.delegate imagePickerController:self didFinishPickingAsset:self.assets[currentSelectedIndex.row]];
+        [self.delegate imagePickerController:self didFinishPickingAsset:self.photos[currentSelectedIndex.row]];
     }
 }
 
+
+
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info;
 {
-    UIImage *originImage = [info objectForKey:UIImagePickerControllerOriginalImage];
-    ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+    PHAsset *asset =  _photos[currentSelectedIndex.row];
+    if(self.didFinishPickingAsset) {
+        self.didFinishPickingAsset(self, asset);
+    }
     
-    [library writeImageToSavedPhotosAlbum:originImage.CGImage
-                                 metadata:[info objectForKey:UIImagePickerControllerMediaMetadata]
-                          completionBlock:^(NSURL *assetURL, NSError *error) {
-                              
-                              [library assetForURL:assetURL resultBlock:^(ALAsset *asset) {
-
-                                  if(self.didFinishPickingAsset) {
-                                      self.didFinishPickingAsset(self, asset);
-                                  }
-
-                                  if ([self.delegate respondsToSelector:@selector(imagePickerController:didFinishPickingAsset:)]) {
-                                      [self.delegate imagePickerController:self didFinishPickingAsset:asset];
-                                  }
-                                  
-                              } failureBlock:^(NSError *error) {
-                                  
-                                  NSLog(@"error couldn't get photo");
-                                  
-                              }];
-                              
-                          }];
+    if ([self.delegate respondsToSelector:@selector(imagePickerController:didFinishPickingAsset:)]) {
+        [self.delegate imagePickerController:self didFinishPickingAsset:asset];
+    }
+    
+//    [library writeImageToSavedPhotosAlbum:originImage.CGImage
+//                                 metadata:[info objectForKey:UIImagePickerControllerMediaMetadata]
+//                          completionBlock:^(NSURL *assetURL, NSError *error) {
+//                              
+//                              [library assetForURL:assetURL resultBlock:^(ALAsset *asset) {
+//
+//                                  if(self.didFinishPickingAsset) {
+//                                      self.didFinishPickingAsset(self, asset);
+//                                  }
+//
+//                                  if ([self.delegate respondsToSelector:@selector(imagePickerController:didFinishPickingAsset:)]) {
+//                                      [self.delegate imagePickerController:self didFinishPickingAsset:asset];
+//                                  }
+//                                  
+//                              } failureBlock:^(NSError *error) {
+//                                  
+//                                  NSLog(@"error couldn't get photo");
+//                                  
+//                              }];
+//                              
+//                          }];
 }
 
 - (IBAction)cancel:(id)sender
@@ -599,11 +414,48 @@
 
 #pragma mark - Fuction
 
+-(void) getImageForAsset: (PHAsset *) asset andTargetSize: (CGSize) targetSize andSuccessBlock:(void (^)(UIImage * photoObj))successBlock {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        PHImageRequestOptions *requestOptions;
+        
+        requestOptions = [[PHImageRequestOptions alloc] init];
+        requestOptions.resizeMode   = PHImageRequestOptionsResizeModeFast;
+        requestOptions.deliveryMode = PHImageRequestOptionsDeliveryModeFastFormat;
+        requestOptions.synchronous = true;
+        requestOptions.networkAccessAllowed = YES;
+        PHImageManager *manager = [PHImageManager defaultManager];
+        [manager requestImageForAsset:asset
+                           targetSize:targetSize
+                          contentMode:PHImageContentModeDefault
+                              options:requestOptions
+                        resultHandler:^void(UIImage *image, NSDictionary *info) {
+                            @autoreleasepool {
+                                if(image!=nil){
+                                    successBlock(image);
+                                }
+                            }
+                        }];
+    });
+    
+}
+
 - (CGRect)view:(UIView *)view setYPostion :(CGFloat)postion {
     CGRect frame = view.frame;
     frame.origin.y = postion;
     
     return frame;
+}
+
+- (void)getCameraRollPhoto {
+    PHFetchOptions *allPhotosOptions = [PHFetchOptions new];
+    if(_nextDate) {
+        allPhotosOptions.predicate = [NSPredicate predicateWithFormat:@"mediaType = %i AND creationDate > %@", PHAssetMediaTypeImage, _nextDate];
+    }
+    else {
+        allPhotosOptions.predicate = [NSPredicate predicateWithFormat:@"mediaType = %i", PHAssetMediaTypeImage];
+    }
+    allPhotosOptions.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
+    _photos = [PHAsset fetchAssetsWithMediaType:PHAssetMediaTypeImage options:allPhotosOptions];
 }
 
 

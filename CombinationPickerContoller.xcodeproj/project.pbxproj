@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2662EF061D7037BB007DCA23 /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2662EF041D703776007DCA23 /* Photos.framework */; };
 		26741F191D49F3AC00A30DA7 /* MBProgressHUD+ODM.m in Sources */ = {isa = PBXBuildFile; fileRef = 26741F181D49F3AC00A30DA7 /* MBProgressHUD+ODM.m */; };
 		26F9FAC11D1D245200BBD9A5 /* ODMGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26F9FABE1D1D245200BBD9A5 /* ODMGroupViewController.m */; };
 		26F9FAC21D1D245200BBD9A5 /* ODMTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 26F9FAC01D1D245200BBD9A5 /* ODMTableViewCell.m */; };
@@ -47,6 +48,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2662EF041D703776007DCA23 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
 		26741F171D49F3AC00A30DA7 /* MBProgressHUD+ODM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "MBProgressHUD+ODM.h"; path = "Classes/MBProgressHUD+ODM.h"; sourceTree = "<group>"; };
 		26741F181D49F3AC00A30DA7 /* MBProgressHUD+ODM.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "MBProgressHUD+ODM.m"; path = "Classes/MBProgressHUD+ODM.m"; sourceTree = "<group>"; };
 		26F9FABD1D1D245200BBD9A5 /* ODMGroupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ODMGroupViewController.h; path = Classes/ODMGroupViewController.h; sourceTree = "<group>"; };
@@ -94,6 +96,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2662EF061D7037BB007DCA23 /* Photos.framework in Frameworks */,
 				84FE55981988D93E0034D932 /* QuartzCore.framework in Frameworks */,
 				8480B5CF1988A02A0074F0A1 /* AssetsLibrary.framework in Frameworks */,
 				8480B59D19889B900074F0A1 /* UIKit.framework in Frameworks */,
@@ -148,6 +151,7 @@
 		8480B59719889B900074F0A1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2662EF041D703776007DCA23 /* Photos.framework */,
 				84FE55971988D93E0034D932 /* QuartzCore.framework */,
 				8480B5CE1988A02A0074F0A1 /* AssetsLibrary.framework */,
 				8480B59819889B900074F0A1 /* Foundation.framework */,
