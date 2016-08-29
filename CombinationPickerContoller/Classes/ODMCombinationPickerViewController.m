@@ -87,8 +87,6 @@
         }
         [self.groups addObject:collection];
     }];
-    [self.collectionView reloadData];
-    [MBProgressHUD dismissGlobalHUD];
     
     [self checkDoneButton];
 }
@@ -447,6 +445,11 @@
         else {
             [_photos addObject:photo];
         }
+        if(idx == [result count]-1) {
+            [self.collectionView reloadData];
+            [MBProgressHUD dismissGlobalHUD];
+        }
+
     }];
 }
 
@@ -470,6 +473,10 @@
         }
         else {
             [_photos addObject:photo];
+        }
+        if(idx == [result count]-1) {
+            [self.collectionView reloadData];
+            [MBProgressHUD dismissGlobalHUD];
         }
     }];
 }
