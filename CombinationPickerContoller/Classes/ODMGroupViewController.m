@@ -10,6 +10,7 @@ static NSString *CellIdentifier = @"groupCell";
 
 #import "ODMGroupViewController.h"
 #import "ODMTableViewCell.h"
+#import "MBProgressHUD+ODM.h"
 
 @interface ODMGroupViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -78,6 +79,7 @@ static NSString *CellIdentifier = @"groupCell";
 #pragma mark - Table View Delegate 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [MBProgressHUD showGlobalProgressHUDWithTitle:@"loading"];
     [self.delegate changeGroup:_groups[indexPath.row]];
 }
 

@@ -20,6 +20,7 @@
 @property (nonatomic, strong) ODMGroupViewController *groupViewController;
 @property (nonatomic) BOOL showOrHide; //show :1 hide : 0
 @property (nonatomic, strong) NSMutableArray *images;
+@property (nonatomic, strong) dispatch_queue_t serialQueue;
 
 @end
 
@@ -43,6 +44,13 @@
 
 - (void)viewDidLoad
 {
+    
+    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _serialQueue = dispatch_queue_create("sessionUploadQueue", NULL);
+    });
+    
     _images = [NSMutableArray new];
     [super viewDidLoad];
     
@@ -158,19 +166,29 @@
     cell.selectionHighlightColor = self.selectionHighlightColor ? self.selectionHighlightColor :cell.selectionHighlightColor;
     
     if([_images count] > indexPath.row) {
-        cell.imageView.image=_images[indexPath.row];
         dispatch_async(dispatch_get_main_queue(), ^{
-        
-        BOOL isSelected = [indexPath isEqual:currentSelectedIndex];
-        BOOL isDeselectedShouldAnimate = currentSelectedIndex == nil && [indexPath isEqual:previousSelectedIndex];
-        
-        [cell setHightlightBackground:isSelected withAimate:isDeselectedShouldAnimate];
+            
+            BOOL isSelected = [indexPath isEqual:currentSelectedIndex];
+            BOOL isDeselectedShouldAnimate = currentSelectedIndex == nil && [indexPath isEqual:previousSelectedIndex];
+            
+            [cell setHightlightBackground:isSelected withAimate:isDeselectedShouldAnimate];
         });
+//        cell.imageView.image=_images[indexPath.row];
+        int k =0;
+        for(NSDictionary *dic in _images) {
+            if([[[dic allKeys] firstObject] longValue] == indexPath.row) {
+               cell.imageView.image = [[dic allValues] firstObject];
+                break;
+            }
+            k++;
+        }
+        
     }
     else {
-        [self getImageForAsset:_photos[indexPath.row] andTargetSize:CGSizeMake(200, 200) andSuccessBlock:^(UIImage *photoObj)
+        [self getImageForAsset:_photos[indexPath.row] andTargetSize:CGSizeMake(300, 300) andSuccessBlock:^(UIImage *photoObj)
         {
-            [_images insertObject:photoObj atIndex:indexPath.row];
+            
+            [_images addObject:@{[NSNumber numberWithLong:indexPath.row]:photoObj}];
             dispatch_async(dispatch_get_main_queue(), ^{
                 cell.imageView.image=photoObj;
                 BOOL isSelected = [indexPath isEqual:currentSelectedIndex];
@@ -250,6 +268,7 @@
 }
 
 - (void)changeGroup:(id)sender {
+    
     //    GroupModel *model = (GroupModel *)sender;
     if([sender isKindOfClass:[PHAssetCollection class]]) {
         [self getPhotosWithCollection:sender];
@@ -411,7 +430,10 @@
 
 -(void) getImageForAsset: (PHAsset *) asset andTargetSize: (CGSize) targetSize andSuccessBlock:(void (^)(UIImage * photoObj))successBlock {
     
-    dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+
+    
+    dispatch_async(_serialQueue, ^{
+        
         PHImageRequestOptions *requestOptions;
         
         requestOptions = [[PHImageRequestOptions alloc] init];
@@ -419,6 +441,7 @@
         requestOptions.deliveryMode = PHImageRequestOptionsDeliveryModeFastFormat;
         requestOptions.synchronous = true;
         requestOptions.networkAccessAllowed = YES;
+        NSLog(@"슈발바랍라발바랍ㄹ");
         PHImageManager *manager = [PHImageManager defaultManager];
         [manager requestImageForAsset:asset
                            targetSize:targetSize
