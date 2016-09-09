@@ -19,6 +19,7 @@
 
 @property (nonatomic, strong) ODMGroupViewController *groupViewController;
 @property (nonatomic) BOOL showOrHide; //show :1 hide : 0
+@property (nonatomic, strong) NSMutableArray *images;
 
 @end
 
@@ -42,6 +43,7 @@
 
 - (void)viewDidLoad
 {
+    _images = [NSMutableArray new];
     [super viewDidLoad];
     
     
@@ -155,17 +157,30 @@
     cell.selectionBorderWidth = self.selectionBorderWidth ? self.selectionBorderWidth : cell.selectionBorderWidth;
     cell.selectionHighlightColor = self.selectionHighlightColor ? self.selectionHighlightColor :cell.selectionHighlightColor;
     
-    
-    
-    [self getImageForAsset:_photos[indexPath.row] andTargetSize:CGSizeMake(200, 200) andSuccessBlock:^(UIImage *photoObj) {
+    if([_images count] > indexPath.row) {
+        cell.imageView.image=_images[indexPath.row];
         dispatch_async(dispatch_get_main_queue(), ^{
-            cell.imageView.image=photoObj;
-            BOOL isSelected = [indexPath isEqual:currentSelectedIndex];
-            BOOL isDeselectedShouldAnimate = currentSelectedIndex == nil && [indexPath isEqual:previousSelectedIndex];
-            
-            [cell setHightlightBackground:isSelected withAimate:isDeselectedShouldAnimate];
+        
+        BOOL isSelected = [indexPath isEqual:currentSelectedIndex];
+        BOOL isDeselectedShouldAnimate = currentSelectedIndex == nil && [indexPath isEqual:previousSelectedIndex];
+        
+        [cell setHightlightBackground:isSelected withAimate:isDeselectedShouldAnimate];
         });
-    }];
+    }
+    else {
+        [self getImageForAsset:_photos[indexPath.row] andTargetSize:CGSizeMake(200, 200) andSuccessBlock:^(UIImage *photoObj)
+        {
+            [_images insertObject:photoObj atIndex:indexPath.row];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                cell.imageView.image=photoObj;
+                BOOL isSelected = [indexPath isEqual:currentSelectedIndex];
+                BOOL isDeselectedShouldAnimate = currentSelectedIndex == nil && [indexPath isEqual:previousSelectedIndex];
+                
+                [cell setHightlightBackground:isSelected withAimate:isDeselectedShouldAnimate];
+            });
+        }];
+    }
+    
     
     
     
@@ -222,10 +237,13 @@
         }
         
     }
+    
     if(previousSelectedIndex) {
         [self.collectionView reloadItemsAtIndexPaths:@[previousSelectedIndex]];
     }
     [self.collectionView reloadItemsAtIndexPaths:@[indexPath]];
+    
+    
     
     
     [self checkDoneButton];
@@ -392,7 +410,8 @@
 #pragma mark - Fuction
 
 -(void) getImageForAsset: (PHAsset *) asset andTargetSize: (CGSize) targetSize andSuccessBlock:(void (^)(UIImage * photoObj))successBlock {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    
+    dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         PHImageRequestOptions *requestOptions;
         
         requestOptions = [[PHImageRequestOptions alloc] init];

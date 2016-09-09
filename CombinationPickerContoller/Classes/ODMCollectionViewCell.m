@@ -40,7 +40,6 @@
     [self.layer removeAllAnimations];
     
     if (isSelected == YES) {
-        
         [self setHightlightBackground];
         
     } else {
