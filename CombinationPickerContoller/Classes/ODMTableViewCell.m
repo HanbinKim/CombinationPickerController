@@ -31,7 +31,9 @@
 
 - (void)setImageView : (PHAssetCollection *)collection{
     
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
     PHFetchOptions *fetchOptions = [[PHFetchOptions alloc] init];
+    
     fetchOptions.predicate = [NSPredicate predicateWithFormat:@"mediaType = %i", PHAssetMediaTypeImage];
     fetchOptions.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
     PHFetchResult *fetchResult;
@@ -41,9 +43,10 @@
     else {
         fetchResult = [PHAsset fetchKeyAssetsInAssetCollection:collection options:fetchOptions];
     }
+    
     PHAsset *asset = [fetchResult firstObject];
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         PHImageRequestOptions *requestOptions;
         
         requestOptions = [[PHImageRequestOptions alloc] init];
